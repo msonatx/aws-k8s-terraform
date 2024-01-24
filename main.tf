@@ -2,6 +2,7 @@ locals {
   env_name_prefix     = "test"
   vpc_cidr            = "10.0.0.0/16"
   k8s_join_token_name = "k8s_join_token"
+  worker_node_count = 3
   private_subnet_cidrs = [
     cidrsubnet(local.vpc_cidr, 3, 0),
     cidrsubnet(local.vpc_cidr, 3, 1),
@@ -56,7 +57,7 @@ module "k8s-bootstrap" {
   ubuntu_ami          = local.ubuntu_ami_id
   ec2_keypair         = local.ec2_keypair
   iam_role            = module.iam.k8s_ec2_instance_profile
-  worker_node_count   = 3
+  worker_node_count   = local.worker_node_count
   private_subnet_ids  = module.vpc-core.private_subnet_ids
   public_subnet_ids   = module.vpc-core.public_subnet_ids
   k8s_join_token_name = local.k8s_join_token_name
